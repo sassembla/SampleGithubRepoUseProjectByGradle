@@ -1,0 +1,43 @@
+apply plugin: 'java'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0'
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/com/kissaki'
+    	}
+	}
+	test {
+		java {
+			srcDir 'test/com/kissaki'
+    	}
+  	}
+}
+
+
+repositories { 
+	mavenRepo urls: 'https://github.com/sassembla/SampleMavenRepoByGradle/raw/master/'
+} 
+ 
+dependencies {
+	compile 'com.kissaki.sample:Samplemavenrepobygradle:0.0.1'
+}
+
+jar {
+	manifest {
+		attributes 'Main-class': 'com.kissaki.SampleGithubRepoUseProjectByGradle' 
+	}
+	
+	from {
+		configurations.runtime.collect {
+			if (it.isDirectory()){
+				it
+			} else {
+				zipTree(it)
+			}
+		}
+	}
+}
